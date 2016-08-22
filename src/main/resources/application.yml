@@ -1,0 +1,33 @@
+spring:
+  profiles.active: h2
+spring.jmx:
+   enabled: false
+server:
+  port: 8090
+security:
+  basic:
+    enabled: false
+management:
+  port: 8091
+  context-path: /manage
+  security:
+    enabled: false
+project:
+  name: cloud-boot-app
+  version: 0.1
+  description: Example Cloud App to Deploy to Backend
+info:
+  build:
+    artifact: ${project.artifactId}
+    name: ${project.name}
+    description: ${project.description}
+    version: ${project.version}
+
+---
+spring:
+  profiles: h2
+spring.datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:bootexample;MODE=MySQL
+spring.jpa:
+    hibernate.ddl-auto: update
