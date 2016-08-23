@@ -4,77 +4,29 @@ This is a basic Java Maven Spring Boot Application that will be put into the clo
 
 ### Playing with the REST Service
 
+There are several operations you can use with this application. They are:
+
+System:
 ```
-POST /api/v1/data
-Accept: application/json
-Content-Type: application/json
-
-{
-"name" : "Test Data",
-"description" : "This is a sample description"
-}
-
-RESPONSE: HTTP 201 (Created)
-Location header: http://localhost:8080/api/v1/data/1
+Hello World: curl http://localhost:10191/cloud-boot-app
+Version Servlet: curl http://localhost:10191/cloud-boot-app/version
 ```
 
-### Retrieve a paginated list of data
-
+CRUD:
 ```
-http://localhost:8080/api/v1/data?page=0&size=10
-
-Response: HTTP 200
-Content: paginated list
-```
-
-### Update a data resource
-
-```
-PUT /api/v1/data/1
-Accept: application/json
-Content-Type: application/json
-
-{
-"name" : "Test Data",
-"description" : "This is a sample description"
-}
-
-RESPONSE: HTTP 204 (No Content)
+Create data object: curl -H "Content-Type: application/json" -X POST -d '{ "name" : "Test Data", "description" : "This is a sample description" }' http://localhost:10191/cloud-boot-app/api/v1/data
+Read all data object: curl -H "Content-Type: application/json" -X GET http://localhost:10191/cloud-boot-app/api/v1/data
+Read single data object: curl -H "Content-Type: application/json" -X GET http://localhost:10191/cloud-boot-app/api/v1/data/1
+Update data object: curl -H "Content-Type: application/json" -X PUT -d '{ "name" : "Test Data", "description" : "This is a modified description", "id" : "1" }' http://localhost:10191/cloud-boot-app/api/v1/data/1
+Delete data object: curl -H "Content-Type: application/json" -X DELETE http://localhost:10191/cloud-boot-app/api/v1/data/1
 ```
 
 # Running the project with MySQL
 
-This project by default uses h2 in-memory database so that I don't have to install a database in order to run it. However, converting it to run with another relational database such as MySQL is a simple matter of changing the application profile
-
-### Then run is using the 'mysql' profile:
+This project by default uses h2 in-memory database so that I don't have to install a database in order to run it. However, converting it to run with another relational database such as MySQL is a simple matter of changing the application profile with mysql profile:
 
 ```
         java -jar -Dspring.profiles.active=mysql target/spring-boot-app-dataservice-0.2.0.war
 or
         mvn spring-boot:run -Drun.arguments="spring.profiles.active=mysql"
 ```
-
-spring:
-  profiles: mysql
-spring.datasource:
-  driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/bootexample
-    username: myadmin
-    password: myadmin
-spring.jpa:
-  hibernate:
-    dialect: org.hibernate.dialect.MySQLInnoDBDialect
-    ddl-auto: update
-
-# Attaching to the app remotely from your IDE
-
-Run the service with these command line options:
-
-```
-mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
-```
-and then you can connect to it remotely using your IDE. For dataservice, from IntelliJ You have to add remote debug configuration: Edit configuration -> Remote.
-
-
-
-

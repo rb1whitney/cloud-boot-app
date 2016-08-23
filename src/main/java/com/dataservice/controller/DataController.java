@@ -1,6 +1,7 @@
 package com.dataservice.controller;
 
 import com.dataservice.domain.Data;
+import com.dataservice.exception.ResourceNotFoundException;
 import com.dataservice.service.DataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,8 @@ public class DataController {
     @Autowired
     private DataService dataService;
 
+    // This function creates data if it is not there. If it is there, it will overwrite it. Location will be returned
+    // back to user.
     @RequestMapping(value = "",
             method = RequestMethod.POST,
             consumes = {"application/json", "application/xml"},
@@ -32,9 +35,11 @@ public class DataController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createData(@RequestBody Data data, HttpServletRequest request, HttpServletResponse response) {
         Data createdData = this.dataService.createData(data);
+        logger.debug("Created following data: " + createdData);
         response.setHeader("Location", request.getRequestURL().append("/").append(createdData.getId()).toString());
     }
 
+    // Gets all data that is available to the Data Service
     @RequestMapping(value = "",
             method = RequestMethod.GET,
             produces = {"application/json", "application/xml"})
@@ -47,43 +52,50 @@ public class DataController {
         return this.dataService.getAllData(page, size);
     }
 
+    // Gets data via the resource id
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET,
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.OK)
     public
     @ResponseBody
-    Data getData(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Data getData(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response)
+            throws ResourceNotFoundException {
         Data data = this.dataService.getData(id);
         checkResourceFound(data);
         return data;
     }
 
+    // Updates data via resource id. Note that id is required in json or otherwise resource will not be found.
     @RequestMapping(value = "/{id}",
             method = RequestMethod.PUT,
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateData(@PathVariable("id") Long id, @RequestBody Data data,
-                           HttpServletRequest request, HttpServletResponse response) throws Exception {
+                           HttpServletRequest request, HttpServletResponse response) throws ResourceNotFoundException {
         checkResourceFound(this.dataService.getData(id));
-        if (id != data.getId()) throw new Exception("ID doesn't match!");
+        if (id != data.getId()) throw new ResourceNotFoundException();
         this.dataService.updateData(data);
+        logger.debug("Updated the following data: " + data);
     }
 
+    // Deletes data via resource id
     @RequestMapping(value = "/{id}",
             method = RequestMethod.DELETE,
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteData(@PathVariable("id") Long id, HttpServletRequest request,
-                           HttpServletResponse response) throws Exception {
+                           HttpServletResponse response) throws ResourceNotFoundException {
         checkResourceFound(this.dataService.getData(id));
         this.dataService.deleteData(id);
+        logger.debug("Deleted the following data associated with id: " + id);
     }
 
-    private static <T> T checkResourceFound(final T resource) throws Exception {
+    // Checks if resource was found from Data Service. Otherwise, will return basic exception
+    private static <T> T checkResourceFound(final T resource) throws ResourceNotFoundException {
         if (resource == null) {
-            throw new Exception("data object not found");
+            throw new ResourceNotFoundException();
         }
         return resource;
     }

@@ -54,6 +54,7 @@ public class Data {
         this.description = description;
     }
 
+    // Returns a basic construct for logging
     @java.lang.Override
     public java.lang.String toString() {
         return "Data{" +

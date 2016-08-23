@@ -13,15 +13,15 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "com.dataservice")
 public class DataServiceSpringController extends SpringBootServletInitializer {
 
-    private static final Logger log = LoggerFactory.getLogger(DataServiceSpringController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataServiceSpringController.class);
+
 	public static void main(String[] args) {
-        log.info("Starting application with Spring Boot");
         SpringApplication.run(DataServiceSpringController.class, args);
 	}
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        logger.info("Configuring application with Spring Boot");
         return application.sources(DataServiceSpringController.class);
     }
-
 }
