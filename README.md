@@ -1,4 +1,5 @@
 # Cloud Boot Application for Tomcat
+[![Status](https://travis-ci.org/rb1whitney/cloud-boot-app.svg?branch=master)](https://travis-ci.org/rb1whitney/cloud-boot-app)
 
 This is a basic Java Maven Spring Boot Application that will be put into the cloud. Intention is to either use an in-memory database or mysql data back end so moving parts in the cloud can be tested. Code was modified and used from https://github.com/khoubyari/spring-boot-rest-example
 
