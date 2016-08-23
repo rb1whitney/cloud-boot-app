@@ -27,7 +27,10 @@ Delete data object: curl -H "Content-Type: application/json" -X DELETE http://lo
 This project by default uses h2 in-memory database so that I don't have to install a database in order to run it. However, converting it to run with another relational database such as MySQL is a simple matter of changing the application profile with mysql profile:
 
 ```
-        java -jar -Dspring.profiles.active=mysql target/spring-boot-app-dataservice-0.2.0.war
+        java -jar -Dspring.profiles.active=mysql target/cloud-boot-app-0.0.1.war
 or
         mvn spring-boot:run -Drun.arguments="spring.profiles.active=mysql"
+or
+        add -Dspring.profiles.active=mysql to application container
 ```
+
