@@ -42,3 +42,26 @@ docker run -p 8090:8090 -d cloud-boot-app:0.2
 
 or run it in interactive mode with to toy with files:
 docker run -it -p 8090:8090 -d cloud-boot-app:0.2 /bin/bash
+
+# Using Official Oracle JDK
+Using Java Oracle 8 is pretty bloated, but if you want to use it replace OpenJDK with a slimmed down first. Yeah... this is technically "illegal" docker use but do we really care?
+
+RUN yum -y install wget && \
+   wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$BUILD_VERSION/jdk-$JAVA_VERSION-linux-x64.tar.gz" -O /tmp/jdk.tar.gz && \
+   tar -xzf /tmp/jdk.tar.gz -C /opt && \
+   ln -s /opt/$JDK_NAME /opt/java && \
+   yum -y remove wget && \
+   rm -rf /tmp/jdk.tar.gz \
+          /opt/java/*src.zip \
+          /opt/java/lib/missioncontrol \
+          /opt/java/lib/visualvm \
+          /opt/java/lib/*javafx* \
+          /opt/java/jre/lib/plugin.jar \
+          /opt/java/jre/lib/ext/jfxrt.jar \
+          /opt/java/jre/bin/javaws \
+          /opt/java/jre/lib/javaws.jar \
+          /opt/java/jre/lib/desktop \
+          /opt/java/jre/plugin \
+          /opt/java/jre/lib/deploy* \
+          /opt/java/jre/lib/*javafx* \
+          /opt/java/jre/lib/*jfx*
