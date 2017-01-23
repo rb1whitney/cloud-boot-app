@@ -34,3 +34,11 @@ or
         add -Dspring.profiles.active=mysql to application container
 ```
 
+# Running with docker
+When running with docker, I package the war as a jar with:
+mvn package -Dpackage_type=jar
+docker build -t cloud-boot-app:0.2 .
+docker run -p 8090:8090 -d cloud-boot-app:0.2
+
+or run it in interactive mode with to toy with files:
+docker run -it -p 8090:8090 -d cloud-boot-app:0.2 /bin/bash
