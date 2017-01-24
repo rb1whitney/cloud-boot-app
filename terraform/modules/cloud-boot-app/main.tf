@@ -2,9 +2,9 @@ provider "aws" {
   region                = "${var.aws_cloud_provider}"
 }
 
-# Our default security group to access the instances over SSH and HTTP
 resource "aws_security_group" "sg_cloud_boot_app_default" {
   name                  = "${var.env_prefix}-sg-cloud-boot-app-default"
+  description           = "Ensures SSH and HTTP are available to incoming traffic and enable all traffic leaving the cloud."
 
   ingress {
     from_port           = 22
@@ -30,6 +30,7 @@ resource "aws_security_group" "sg_cloud_boot_app_default" {
 
 resource "aws_security_group" "sg_cloud_boot_app" {
   name                  = "${var.env_prefix}-cloud-boot-app-incoming-port"
+  description           = "Ensures that we can communicate with cloud boot application"
 
   ingress {
     from_port           = "${var.cloud_boot_server_port}"
@@ -45,6 +46,7 @@ resource "aws_security_group" "sg_cloud_boot_app" {
 
 resource "aws_security_group" "sg_elb" {
   name                  = "${var.env_prefix}-cloud-boot-app-elb"
+  description           = "Ensures we can communicate over load balancer port and return all traffic"
 
   egress {
       from_port         = 0
@@ -88,7 +90,7 @@ resource "aws_elb" "elb_cloud_boot_app" {
   health_check {
     healthy_threshold   = 2
     interval            = 30
-    target              = "HTTP:${var.cloud_boot_server_port}/"
+    target              = "HTTP:${var.cloud_boot_server_port}/cloud-boot-app/version"
     timeout             = 3
     unhealthy_threshold = 2
   }
