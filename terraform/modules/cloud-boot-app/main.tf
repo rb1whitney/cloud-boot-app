@@ -63,12 +63,21 @@ resource "aws_security_group" "sg_elb" {
   }
 }
 
+# Passes port to user data script for EC2 instances
+data "template_file" "ud_cloud_boot_app" {
+  template = "${file("${path.module}/cloud-boot-app-userdata.sh")}"
+
+  vars {
+    cloud_boot_server_port = "${var.cloud_boot_server_port}"
+  }
+}
+
 resource "aws_launch_configuration" "lc_cloud_boot_app" {
   image_id              = "${var.cloud_boot_server_image_id}"
   instance_type         = "${var.cloud_boot_server_instance_type}"
   key_name              = "${var.cloud_key_name}"
   security_groups       = ["${aws_security_group.sg_cloud_boot_app.id}", "${aws_security_group.sg_cloud_boot_app_default.id}"]
-  user_data             = "${file("${path.module}/cloud-boot-app-userdata.sh")}"
+  user_data             = "${data.template_file.ud_cloud_boot_app.rendered}"
 
   lifecycle {
     create_before_destroy = true
