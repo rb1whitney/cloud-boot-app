@@ -5,6 +5,7 @@ spring.jmx:
 server:
   port: 8090
   context-path: /${project.name}/
+  environment_name: ${cba_environment}
 security:
   basic:
     enabled: false

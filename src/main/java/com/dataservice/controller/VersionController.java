@@ -24,6 +24,9 @@ public class VersionController {
     @Value("${project.maintainer:UNKNOWN}")
     private String maintainer = "UNKNOWN";
 
+    @Value("${server.environment_name:UNKNOWN}")
+    private String environment_name = "UNKNOWN";
+
     // Returns a Version Servlet
     @RequestMapping(value = "/version", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -40,7 +43,7 @@ public class VersionController {
     }
 
     // Default welcome page for testing purposes
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String getWelcomePage() {
@@ -50,6 +53,8 @@ public class VersionController {
         response.append(artifactId);
         response.append("</title></head><body><b>Welcome to this Demo App!!!</b></br>Mantained by:");
         response.append(maintainer);
+        response.append("<br>Environment Name:");
+        response.append(environment_name);
         response.append("</body></html>");
         return response.toString();
     }
