@@ -11,7 +11,7 @@ terraform remote config -backend=s3 -backend-config="bucket=tf-remote-state-stor
 terraform remote pull
 
 # Get all modules if needed
-terraform get environments/$app
+terraform get module-groups/$app
 
 # Apply Changes
-terraform $action ${*:4} -var-file="environments/$app/$env.tfvars" environments/$app
+terraform $action ${*:4} -var-file="config/var-files/$app/$env.tfvars" module-groups/$app

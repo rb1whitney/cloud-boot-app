@@ -35,6 +35,13 @@ resource "aws_security_group" "cba_app" {
     cidr_blocks         = [ "0.0.0.0/0" ]
   }
 
+  ingress {
+      from_port           = "22"
+      to_port             = "22"
+      protocol            = "tcp"
+      cidr_blocks         = [ "0.0.0.0/0" ]
+    }
+
   egress {
       from_port           = 0
       to_port             = 0
@@ -79,9 +86,9 @@ resource "aws_security_group" "cba_elb" {
   }
 }
 
-// Passes port to user data script for EC2 instances
+// Passes port to user data script for EC2 instances (can pass sh file too if you want)
 data "template_file" "cba_userdata" {
-  template              = "${file("${path.module}/user-data/cloud-boot-app-userdata.sh")}"
+  template              = "${file("${path.module}/user-data/cloud-boot-app-userdata.tpl")}"
 
   vars {
     cba_port_ri         = "${var.cba_port}"
