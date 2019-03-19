@@ -35,10 +35,11 @@ or
 ```
 
 # Running with docker
-When running with docker, I package the war as a jar with:
-mvn package -Dpackage_type=jar
+When running with docker, I package the war as a jar with mutil-stage dockerfile using maven and Java 1.8 OpenJDK:
+```
 docker build -t cloud-boot-app:0.2 .
-docker run -p 8090:8090 -d cloud-boot-app:0.2
+docker run -p 8090:8090 -d cloud-boot-app:0.3
+```
 
 or run it in interactive mode with to toy with files:
 docker run -it -p 8090:8090 -d cloud-boot-app:0.2 /bin/bash
