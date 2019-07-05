@@ -3,9 +3,10 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-    bucket = "tf-remote-state-storage"
-    acl = "private"
-    versioning {
-        enabled = true
-    }
+  bucket = "tf-remote-state-storage"
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
 }
