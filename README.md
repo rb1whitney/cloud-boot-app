@@ -71,17 +71,14 @@ RUN yum -y install wget && \
           /opt/java/jre/lib/*jfx*
 ```
 
-
 # Deploying Application with Terraform
 You can deploy the application with terraform using:
 If you want to use Terraform, please install it and AWS CLI client following with: http://docs.aws.amazon.com/cli/latest/userguide/installing.html#install-with-pip https://www.terraform.io/intro/getting-started/install.html
 
 Once done, you can use "aws configure" command to setup your local provider and credentials. Terraform will use them. I recommend setting up a personalized IAM account that has adminstrator privileges in EC2 only.
 
-After setting up Terraform with AWS, you will want a remote config to keep your state rather than your local computer. Remote State Storage is highly suggested over maintaining control state files in version control. I created in S3 US-EAST-1 the following storage bucket: tf-remote-state-storage and then with terraform ran: terraform remote config -backend=s3 -backend-config="bucket=tf-remote-state-storage" -backend-config="key=terraform.tfstate" -backend-config="region=us-east-1" -backend-config="encrypt=true".
+After setting up Terraform with AWS, you will want a remote config to keep your state rather than your local computer. Remote State Storage is highly suggested over maintaining control state files in version control. I also wrote a script that will use terraform output for auto scaling group to get current ip addresses on spun up instances: sh find_auto_scaling_group_instances.sh <>
 
-I also wrote a script that will use terraform output for auto scaling group to get current ip addresses on spun up instances: sh find_auto_scaling_group_instances.sh <>
+The organized terraform stack files with their environments files. To save configuration, I kept the module and main terraform implementation files the same and utilized tfvars to control location specific settings. You have to clear out the .terraform cache folder everytime but with the state files being in S3 I had no issues with this implementation. I created a script to help run this with: terraform_wrapper.sh -e <<environment:dev|prod>> -m <<module_group:cloud-boot-app>> -a <<action:apply|plan|destroy>>
 
-The organized terraform stack files with their environments files. To save configuration, I kept the module and main terraform implementation files the same and utilized tfvars to control location specific settings. You have to clear out the .terraform cache folder everytime but with the state files being in S3 I had no issues with this implementation. I created a script to help run this with: terraform_wrapper.sh <<environment:dev|prod>> <<application_type:cloud-boot-app>> <<action:apply|plan|destroy>>
-
-Script will clear cache, set terraform state in C3, get all modules, and then invoke action (apply, destroy, plan)
+Script will clear cache, set terraform state in C3, get all modules, and then invoke action (apply, destroy, plan).
