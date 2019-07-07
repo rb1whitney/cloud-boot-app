@@ -34,22 +34,43 @@ variable "cba_asg_desired" {
   default = 1
 }
 
-// Please see ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20160627
-variable "aws_image_id" {
-  default = {
-    "us-east-1" = "ami-2d39803a"
-  }
+variable "bastion_asg_min" {
+  default = 1
 }
 
-variable "aws_cloud_azs" {
-  default = {
-    "us-east-1" = "us-east-1a,us-east-1b"
-  }
+variable "bastion_asg_max" {
+  default = 1
+}
+
+variable "bastion_asg_desired" {
+  default = 1
 }
 
 // Values must be passed in
-variable "env_prefix" {}
+variable "env_prefix" {
+}
 
-variable "public_cidr_block" {}
-variable "ssh_access_cidr_block" {}
-variable "vpc_cidr_block" {}
+variable "public_cidr_block" {
+  type = string
+}
+
+variable "ssh_access_cidr_block" {
+  type = string
+}
+
+variable "vpc_cidr_block" {
+  type = string
+}
+
+variable "ami_owner" {
+  description = "Owner of the AMI to reduce search requirement for a unique AMI (defaults to Canonical)"
+  type        = string
+  default     = "099720109477"
+
+}
+
+variable "ami_name" {
+  description = "AMI to use on bastion and cloud boot app auto-scaling groups"
+  type        = string
+  default     = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20190628"
+}

@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "${var.aws_cloud_provider}"
+  region = var.aws_cloud_provider
 }
 
 resource "aws_s3_bucket" "terraform_state" {
@@ -10,3 +10,4 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled = true
   }
 }
+
