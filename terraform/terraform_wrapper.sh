@@ -8,7 +8,7 @@ set -o errexit
 set -o nounset
 
 # Unset to debug script
-set -x
+# set -x
 
 # Unset options
 trap 'rc=$?;eval "$ORIGINAL_OPTS";trap - EXIT; exit $rc' EXIT
