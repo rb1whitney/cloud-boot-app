@@ -13,7 +13,7 @@ SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = true
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/jammy64"
   config.vm.box_check_update = true
   config.vm.hostname = "docker-cloud-boot-app"
   config.vm.network 'private_network', type: 'dhcp'
