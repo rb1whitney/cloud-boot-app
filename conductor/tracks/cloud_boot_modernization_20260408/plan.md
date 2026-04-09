@@ -5,10 +5,10 @@ This plan outlines the major version upgrade of the `cloud-boot-app` project, in
 ## Phase 1: Build & Dependency Baseline
 **Goal:** Update Maven configuration and identify initial breakage.
 
-- [~] Task: Update `pom.xml` to Java 21 and Spring Boot 3.2.x `[~]`
-- [ ] Task: Replace Springfox with `springdoc-openapi-starter-webmvc-ui` `[ ]`
-- [ ] Task: Update MySQL, H2, and HSQLDB dependency coordinates `[ ]`
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Build & Dependency Baseline' (Protocol in workflow.md) `[ ]`
+- [x] Task: Update `pom.xml` to Java 21 and Spring Boot 3.2.x `[x]` db2f4e9
+- [x] Task: Replace Springfox with `springdoc-openapi-starter-webmvc-ui` `[x]` d3eb083
+- [x] Task: Update MySQL, H2, and HSQLDB dependency coordinates `[x]` d38ba14
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Build & Dependency Baseline' (Protocol in workflow.md) `[~]`
 
 ## Phase 2: Jakarta EE & Code Migration
 **Goal:** Migrate source code to Jakarta EE namespace and resolve breaking changes.

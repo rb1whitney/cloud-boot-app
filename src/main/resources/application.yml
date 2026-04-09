@@ -4,7 +4,8 @@ spring.jmx:
    enabled: false
 server:
   port: 8090
-  context-path: /${project.name}/
+  servlet:
+    context-path: /${project.name}/
   environment_name: ${cba_environment:dev}
 security:
   basic:
@@ -29,8 +30,10 @@ logging:
     com.dataservice: DEBUG
     org.hibernate: DEBUG
 ---
-
-spring.profiles: h2
+spring:
+  config:
+    activate:
+      on-profile: h2
 
 spring.datasource:
     driverClassName: org.h2.Driver
@@ -39,8 +42,10 @@ spring.jpa:
     hibernate.ddl-auto: update
 
 ---
-
-spring.profiles: mysql
+spring:
+  config:
+    activate:
+      on-profile: mysql
 
 spring.datasource:
   jndi-name: java:comp/env/jdbc/mySqlDataSource

@@ -4,16 +4,16 @@ import com.dataservice.DataServiceSpringController;
 import com.dataservice.controller.DataController;
 import com.dataservice.domain.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -23,12 +23,12 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DataServiceSpringController.class)
 public class DataServiceControllerTest {
 
@@ -42,7 +42,7 @@ public class DataServiceControllerTest {
 
     private MockMvc mvc;
 
-    @Before
+    @BeforeEach
     public void initTests() {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.webAppContextSetup(context).build();

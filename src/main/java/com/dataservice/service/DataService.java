@@ -24,7 +24,7 @@ public class DataService {
 
     // Get matching data object that matches id and returns to user.
     public Data getData(long id) {
-        return DataRepository.findOne(id);
+        return DataRepository.findById(id).orElse(null);
     }
 
     // Find and update data object
@@ -34,12 +34,12 @@ public class DataService {
 
     //Find and delete data object
     public void deleteData(Long id) {
-        DataRepository.delete(id);
+        DataRepository.deleteById(id);
     }
 
     // Get all data objects that match id and returns to user.
     public Page<Data> getAllData(Integer page, Integer size) {
-        Page pageOfData = DataRepository.findAll(new PageRequest(page, size));
+        Page<Data> pageOfData = DataRepository.findAll(PageRequest.of(page, size));
         return pageOfData;
     }
 }

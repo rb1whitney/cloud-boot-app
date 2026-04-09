@@ -1,7 +1,7 @@
 package com.dataservice.domain;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.*;
 
 /* Domain Transaction Object Class */
 
