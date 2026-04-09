@@ -5,10 +5,11 @@ ENV JENKINS_MIRROR http://mirrors.jenkins-ci.org
 EXPOSE 8080
 USER root
 
-# Install All Required Plugins
-# Note: install-plugins.sh is deprecated in newer Jenkins images, 
-# but keeping original flow for minimal impact unless build fails.
-RUN /usr/local/bin/install-plugins.sh \
+# Install Required Software (Modernized to Java 21)
+RUN apt-get update && apt-get install -y git jq openjdk-21-jre-headless maven
+
+# Install All Required Plugins using modern CLI
+RUN jenkins-plugin-cli --plugins \
     antisamy-markup-formatter \
     build-pipeline-plugin \
     build-timeout \
@@ -28,6 +29,3 @@ RUN /usr/local/bin/install-plugins.sh \
     timestamper \
     workflow-aggregator \
     ws-cleanup
-
-# Install Required Software (Modernized to Java 21)
-RUN apt-get update && apt-get install -y git jq openjdk-21-jre-headless maven
