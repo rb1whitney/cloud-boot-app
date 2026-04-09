@@ -1,6 +1,7 @@
 package com.dataservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.xml.bind.annotation.*;
 
 /* Domain Transaction Object Class */
@@ -16,6 +17,7 @@ public class Data {
     private long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @Column()

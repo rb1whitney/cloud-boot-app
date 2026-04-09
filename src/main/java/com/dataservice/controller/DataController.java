@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 /* REST API endpoints */
 
@@ -33,7 +34,7 @@ public class DataController {
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void createData(@RequestBody Data data, HttpServletRequest request, HttpServletResponse response) {
+    public void createData(@RequestBody @Valid Data data, HttpServletRequest request, HttpServletResponse response) {
         Data createdData = this.dataService.createData(data);
         logger.debug("Created following data: " + createdData);
         response.setHeader("Location", request.getRequestURL().append("/").append(createdData.getId()).toString());
@@ -72,7 +73,7 @@ public class DataController {
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateData(@PathVariable("id") Long id, @RequestBody Data data,
+    public void updateData(@PathVariable("id") Long id, @RequestBody @Valid Data data,
                            HttpServletRequest request, HttpServletResponse response) throws ResourceNotFoundException {
         checkResourceFound(this.dataService.getData(id));
         if (id != data.getId()) throw new ResourceNotFoundException();
