@@ -1,4 +1,9 @@
 # Cloud Boot App - Modernized Makefile for Local Linting & Testing
+SHELL := /bin/bash
+
+# Ensure Homebrew and local binaries are in the PATH
+export PATH := /home/linuxbrew/.linuxbrew/bin:$(PATH)
+
 .PHONY: lint lint-java lint-hcl lint-helm lint-opa lint-docker test test-java test-iac
 
 # Default target runs all linters
@@ -8,6 +13,7 @@ lint: lint-java lint-hcl lint-helm lint-opa lint-docker
 
 # 1. Java Linting (Maven)
 lint-java:
+	@echo "==> Compiling Java with Maven..."
 	mvn compile
 
 # 2. Terraform/HCL Linting & Validation
@@ -40,6 +46,7 @@ lint-docker:
 test: test-java test-iac
 
 test-java:
+	@echo "==> Running JUnit tests..."
 	mvn test
 
 test-iac:

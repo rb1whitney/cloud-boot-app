@@ -3,7 +3,7 @@
 # 2.) Runs Spring Boot Application using Google Distroless Java 21
 
 # Builder Code
-FROM maven:3.9.13-eclipse-temurin-25 AS builder
+FROM maven:3.9.14-eclipse-temurin-21 AS builder
 RUN mkdir -p /usr/src/build
 WORKDIR /usr/src/build
 
@@ -17,7 +17,7 @@ COPY . /usr/src/build
 RUN mvn package -Dpackage_type=jar -DskipTests
 
 # Actual Container Code that will be run
-FROM gcr.io/distroless/java21-debian12
+FROM gcr.io/distroless/java21-debian12:nonroot
 
 # Override to specify environment name
 ENV CBA_ENVIRONMENT local
