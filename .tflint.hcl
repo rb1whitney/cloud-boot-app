@@ -1,9 +1,10 @@
-[tflint]
+config {
   format = "compact"
   plugin_dir = "~/.tflint.d/plugins"
   call_module_type = "local"
   force = false
   disabled_by_default = false
+}
 
 # AWS provider rules
 plugin "aws" {
