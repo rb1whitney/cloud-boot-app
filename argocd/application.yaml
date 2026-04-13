@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/rb1whitney/Programming-Work.git # PLACEHOLDER: Update with your repo URL
+    repoURL: https://github.com/rb1whitney/cloud-boot-app.git
     targetRevision: HEAD
-    path: cloud-boot-app/crossplane
+    path: crossplane
   destination:
     server: https://kubernetes.default.svc
     namespace: crossplane-system
@@ -28,9 +28,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/rb1whitney/Programming-Work.git # PLACEHOLDER: Update with your repo URL
+    repoURL: https://github.com/rb1whitney/cloud-boot-app.git
     targetRevision: HEAD
-    path: cloud-boot-app/helm/cloud-boot-app
+    path: helm/cloud-boot-app
     helm:
       valueFiles:
       - values.yaml
