@@ -40,7 +40,7 @@ spec:
           engine: mysql
           engineVersion: "8.0"
           dbName: cloudbootapp
-          skipFinalSnapshot: true
+          skipFinalSnapshot: false
     patches:
     - fromFieldPath: "db.instanceClass"
       toFieldPath: "spec.forProvider.instanceClass"
@@ -56,7 +56,7 @@ spec:
         forProvider:
           chart:
             name: cloud-boot-app
-            repository: https://charts.yourdomain.com
+            repository: oci://registry-1.docker.io/rb1whitney
             version: "0.1.0"
           namespace: cloud-boot-app
     patches:

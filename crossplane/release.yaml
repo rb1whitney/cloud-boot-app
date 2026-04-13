@@ -7,7 +7,7 @@ spec:
   forProvider:
     chart:
       name: cloud-boot-app
-      repository: https://charts.yourdomain.com # Assume your chart is published here
+      repository: oci://registry-1.docker.io/rb1whitney # Published at https://hub.docker.com/r/rb1whitney/cloud-boot-app
       version: "0.1.0"
     namespace: cloud-boot-app
     values:
