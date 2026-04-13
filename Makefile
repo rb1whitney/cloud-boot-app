@@ -16,6 +16,8 @@ lint-hcl:
 	terraform fmt -recursive -check terraform/
 	@echo "==> Validating Terraform Modules..."
 	find terraform/ -name "*.tf" -exec dirname {} \; | sort -u | xargs -I {} sh -c "cd {} && terraform init -backend=false && terraform validate"
+	@echo "==> Initializing TFLint..."
+	tflint --init --config $(shell pwd)/.tflint.hcl
 	@echo "==> Running TFLint..."
 	find terraform/ -name "*.tf" -exec dirname {} \; | sort -u | xargs -I {} tflint --chdir={} --config $(shell pwd)/.tflint.hcl
 
