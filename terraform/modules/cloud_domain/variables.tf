@@ -1,8 +1,3 @@
-variable "aws_cloud_provider" {
-  description = "The default provider"
-  type        = string
-}
-
 variable "env_prefix" {
   description = "Location Prefix for all AWS Types"
   type        = string

@@ -37,3 +37,19 @@ failsafe-reports/
 # OS
 .DS_Store
 Thumbs.db
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+terraform/core/.terraform.lock.hcl
+terraform/core/.terraform/
+terraform/module-groups/cloud-boot-app/.terraform.lock.hcl
+terraform/module-groups/cloud-boot-app/.terraform/
+terraform/modules/bastion/.terraform.lock.hcl
+terraform/modules/bastion/.terraform/
+terraform/modules/cloud_boot_app/.terraform.lock.hcl
+terraform/modules/cloud_boot_app/.terraform/
+terraform/modules/cloud_domain/.terraform.lock.hcl
+terraform/modules/cloud_domain/.terraform/
+terraform/modules/s3_bucket/.terraform.lock.hcl
+terraform/modules/s3_bucket/.terraform/

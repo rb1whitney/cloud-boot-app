@@ -1,3 +1,1 @@
-data "aws_availability_zones" "available" {
-  state = "available"
-}
+# Data sources for Cloud Boot App module

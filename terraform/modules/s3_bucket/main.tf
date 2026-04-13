@@ -2,6 +2,15 @@ provider "aws" {
   region = var.aws_cloud_provider
 }
 
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "tf-remote-state-storage"
 }

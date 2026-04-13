@@ -1,5 +1,10 @@
-provider "aws" {
-  region = var.aws_cloud_provider
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
 }
 
 resource "aws_vpc" "vpc_cba" {
@@ -43,8 +48,7 @@ resource "aws_route_table" "public_cba" {
 }
 
 resource "aws_route_table_association" "public_cba" {
-  route_table_id = element(aws_route_table.public_cba.*.id, count.index)
-  subnet_id      = element(aws_subnet.public_cba.*.id, count.index)
+  route_table_id = aws_route_table.public_cba[count.index].id
+  subnet_id      = aws_subnet.public_cba[count.index].id
   count          = length(data.aws_availability_zones.available.names)
 }
-
