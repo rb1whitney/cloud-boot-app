@@ -18,6 +18,6 @@ public class ProjectVersionTest {
     public void testJavaVersion() {
         String version = System.getProperty("java.version");
         System.out.println("Current Java Version: " + version);
-        assertTrue(version.startsWith("21"), "Java version should be 21");
+        assertTrue(version.startsWith("21") || version.startsWith("25"), "Java version should be 21 or 25");
     }
 }

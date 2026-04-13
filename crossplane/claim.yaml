@@ -1,0 +1,15 @@
+apiVersion: database.example.org/v1alpha1
+kind: CloudBootApp
+metadata:
+  name: my-cloud-boot-app
+  namespace: default
+spec:
+  parameters:
+    bucketName: "rb1-my-app-unique-bucket-2026"
+    dbSize: "small"
+    storageGB: 30
+    replicaCount: 3
+    imageTag: "modernized"
+  compositionSelector:
+    matchLabels:
+      provider: aws

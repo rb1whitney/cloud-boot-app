@@ -1,0 +1,37 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: cloud-boot-app
+build:
+  artifacts:
+    - image: cloud-boot-app
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: cloud-boot-app
+        chartPath: helm/cloud-boot-app
+        valuesFiles:
+          - helm/cloud-boot-app/values.yaml
+        namespace: {{.NAMESPACE}} # Skaffold injects this via -n flag
+        setValueTemplates:
+          image.tag: "{{.DIGEST_ALGO}}:{{.DIGEST_HEX}}"
+        wait: true
+portForward:
+  - resourceType: service
+    resourceName: cloud-boot-app
+    port: 8090
+    localPort: 8090
+  - resourceType: service
+    resourceName: cloud-boot-app
+    port: 8091
+    localPort: 8091
+profiles:
+  - name: mysql
+    deploy:
+      helm:
+        releases:
+          - name: cloud-boot-app
+            setValues:
+              env.spring_profiles_active: "mysql,prod"

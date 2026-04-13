@@ -7,14 +7,9 @@ server:
   servlet:
     context-path: /${project.name}/
   environment_name: ${cba_environment:dev}
-security:
-  basic:
-    enabled: false
 management:
   port: 8091
   context-path: /manage
-  security:
-    enabled: false
 project:
   name: cloud-boot-app
   artifactId: @project.artifactId@
@@ -26,9 +21,9 @@ logging:
     console: "%d %-5level %logger : %msg%n"
     file: "%d %-5level [%thread] %logger : %msg%n"
   level:
-    org.springframework.web: DEBUG
-    com.dataservice: DEBUG
-    org.hibernate: DEBUG
+    org.springframework.web: INFO
+    com.dataservice: INFO
+    org.hibernate: INFO
 ---
 spring:
   config:

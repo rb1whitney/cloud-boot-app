@@ -1,9 +1,10 @@
 package com.dataservice.controller;
 
-import com.dataservice.domain.Data;
+import com.dataservice.dto.DataDTO;
 import com.dataservice.exception.ResourceNotFoundException;
 import com.dataservice.service.DataService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,9 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/v1/data")
-@Slf4j
 public class DataController {
 
+    private static final Logger log = LoggerFactory.getLogger(DataController.class);
     private static final String DEFAULT_PAGE_SIZE = "10";
     private static final String DEFAULT_PAGE_NUM = "0";
 
@@ -32,8 +33,8 @@ public class DataController {
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void createData(@RequestBody @Valid Data data, HttpServletRequest request, HttpServletResponse response) {
-        Data createdData = this.dataService.createData(data);
+    public void createData(@RequestBody @Valid DataDTO data, HttpServletRequest request, HttpServletResponse response) {
+        DataDTO createdData = this.dataService.createData(data);
         log.debug("Created following data: {}", createdData);
         response.setHeader("Location", request.getRequestURL().append("/").append(createdData.getId()).toString());
     }
@@ -42,7 +43,7 @@ public class DataController {
     @GetMapping(value = "",
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Page<Data> getAllData(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) Integer page,
+    public @ResponseBody Page<DataDTO> getAllData(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) Integer page,
                                                @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size,
                                                HttpServletRequest request, HttpServletResponse response) {
         return this.dataService.getAllData(page, size);
@@ -52,9 +53,9 @@ public class DataController {
     @GetMapping(value = "/{id}",
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Data getData(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response)
+    public @ResponseBody DataDTO getData(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response)
             throws ResourceNotFoundException {
-        Data data = this.dataService.getData(id);
+        DataDTO data = this.dataService.getData(id);
         checkResourceFound(data);
         return data;
     }
@@ -64,7 +65,7 @@ public class DataController {
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateData(@PathVariable("id") Long id, @RequestBody @Valid Data data,
+    public void updateData(@PathVariable("id") Long id, @RequestBody @Valid DataDTO data,
                            HttpServletRequest request, HttpServletResponse response) throws ResourceNotFoundException {
         checkResourceFound(this.dataService.getData(id));
         if (id != data.getId()) throw new ResourceNotFoundException();

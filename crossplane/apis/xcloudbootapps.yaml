@@ -1,0 +1,47 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xcloudbootapps.database.example.org
+spec:
+  group: database.example.org
+  names:
+    kind: XCloudBootApp
+    plural: xcloudbootapps
+  claimNames:
+    kind: CloudBootApp
+    plural: cloudbootapps
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  dbSize:
+                    type: string
+                    description: "Size of the database (e.g., small, medium, large)"
+                    default: "small"
+                  storageGB:
+                    type: integer
+                    description: "Storage size in GB"
+                    default: 20
+                  bucketName:
+                    type: string
+                    description: "Unique name for the app S3 bucket"
+                  replicaCount:
+                    type: integer
+                    default: 2
+                  imageTag:
+                    type: string
+                    default: "modernized"
+                required:
+                  - bucketName
+            required:
+              - parameters

@@ -1,0 +1,29 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: cloud-boot-app
+  namespace: crossplane-system
+spec:
+  forProvider:
+    chart:
+      name: cloud-boot-app
+      repository: https://charts.yourdomain.com # Assume your chart is published here
+      version: "0.1.0"
+    namespace: cloud-boot-app
+    values:
+      replicaCount: 3
+      image:
+        tag: "modernized"
+      env:
+        spring_profiles_active: "mysql,prod"
+      service:
+        type: LoadBalancer
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 1Gi
+  providerConfigRef:
+    name: helm-provider-config

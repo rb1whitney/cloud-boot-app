@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +25,7 @@ public class DataValidationTest {
     private MockMvc mvc;
 
     @Test
+    @WithMockUser
     public void shouldFailWhenNameIsNull() throws Exception {
         Data mockData = new Data();
         mockData.setDescription("description without name");
@@ -36,5 +38,18 @@ public class DataValidationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser
+    public void exerciseAllDataMethods() {
+        Data data = new Data();
+        data.setId(100L);
+        data.setName("Test Name");
+        data.setDescription("Test Description");
+        
+        assert(data.getId() == 100L);
+        assert(data.getName().equals("Test Name"));
+        assert(data.getDescription().equals("Test Description"));
     }
 }

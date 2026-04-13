@@ -1,0 +1,23 @@
+# CODEOWNERS
+# Owners are automatically requested for review on any PR touching those paths.
+
+# ── Global fallback ──────────────────────────────────────────────────────────
+* @rb1whitney
+
+# ── Infrastructure ───────────────────────────────────────────────────────────
+terraform/    @rb1whitney
+helm/         @rb1whitney
+crossplane/   @rb1whitney
+gatekeeper/   @rb1whitney
+
+# ── Application ──────────────────────────────────────────────────────────────
+src/          @rb1whitney
+pom.xml       @rb1whitney
+
+# ── CI/CD & Configuration ─────────────────────────────────────────────────────
+.github/      @rb1whitney
+jenkins/      @rb1whitney
+argocd/       @rb1whitney
+Makefile      @rb1whitney
+devbox.json   @rb1whitney
+skaffold.yaml @rb1whitney

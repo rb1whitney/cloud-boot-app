@@ -1,0 +1,24 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPrivilegedContainer
+metadata:
+  name: cloud-boot-app-no-privileged-container
+spec:
+  match:
+    namespaces:
+      - cloud-boot-app
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]
+
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSReadOnlyRootFilesystem
+metadata:
+  name: cloud-boot-app-read-only-root-fs
+spec:
+  match:
+    namespaces:
+      - cloud-boot-app
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]

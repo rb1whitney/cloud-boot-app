@@ -1,0 +1,39 @@
+# =============================================================================
+# Cloud Boot App - Project Specific
+# =============================================================================
+
+# AST Cache & Mapping
+.ast_cache/
+code_map.md
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+build.log
+.flattened-pom.xml
+invoker-log/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.settings/
+.project
+.classpath
+.factorypath
+bin/
+*.iml
+*.iws
+*.ipr
+
+# Testing
+surefire-reports/
+failsafe-reports/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
