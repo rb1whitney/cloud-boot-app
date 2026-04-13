@@ -4,16 +4,12 @@ spring.jmx:
    enabled: false
 server:
   port: 8090
-  context-path: /${project.name}/
+  servlet:
+    context-path: /${project.name}/
   environment_name: ${cba_environment:dev}
-security:
-  basic:
-    enabled: false
 management:
   port: 8091
   context-path: /manage
-  security:
-    enabled: false
 project:
   name: cloud-boot-app
   artifactId: @project.artifactId@
@@ -25,12 +21,14 @@ logging:
     console: "%d %-5level %logger : %msg%n"
     file: "%d %-5level [%thread] %logger : %msg%n"
   level:
-    org.springframework.web: DEBUG
-    com.dataservice: DEBUG
-    org.hibernate: DEBUG
+    org.springframework.web: INFO
+    com.dataservice: INFO
+    org.hibernate: INFO
 ---
-
-spring.profiles: h2
+spring:
+  config:
+    activate:
+      on-profile: h2
 
 spring.datasource:
     driverClassName: org.h2.Driver
@@ -39,8 +37,10 @@ spring.jpa:
     hibernate.ddl-auto: update
 
 ---
-
-spring.profiles: mysql
+spring:
+  config:
+    activate:
+      on-profile: mysql
 
 spring.datasource:
   jndi-name: java:comp/env/jdbc/mySqlDataSource

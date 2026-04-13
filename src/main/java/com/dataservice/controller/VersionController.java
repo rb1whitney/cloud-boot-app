@@ -3,8 +3,7 @@ package com.dataservice.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -28,7 +27,7 @@ public class VersionController {
     private String environment_name = "UNKNOWN";
 
     // Returns a Version Servlet
-    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    @GetMapping(value = "/version")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String getVersion() {
@@ -43,7 +42,7 @@ public class VersionController {
     }
 
     // Default welcome page for testing purposes
-    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    @GetMapping(value = "/welcome")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String getWelcomePage() {

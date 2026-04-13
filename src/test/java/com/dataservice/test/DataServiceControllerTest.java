@@ -2,18 +2,18 @@ package com.dataservice.test;
 
 import com.dataservice.DataServiceSpringController;
 import com.dataservice.controller.DataController;
-import com.dataservice.domain.Data;
+import com.dataservice.dto.DataDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -22,13 +22,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.regex.Pattern;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DataServiceSpringController.class)
 public class DataServiceControllerTest {
 
@@ -42,13 +43,16 @@ public class DataServiceControllerTest {
 
     private MockMvc mvc;
 
-    @Before
+    @BeforeEach
     public void initTests() {
         MockitoAnnotations.initMocks(this);
-        mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
     }
 
     @Test
+    @WithMockUser
     public void shouldHaveOKStatus() throws Exception {
         mvc.perform(get("/api/v1/data")
                 .accept(MediaType.APPLICATION_JSON))
@@ -56,8 +60,17 @@ public class DataServiceControllerTest {
     }
 
     @Test
+    @WithMockUser
+    public void shouldGetPaginatedData() throws Exception {
+        mvc.perform(get("/api/v1/data?page=0&size=5")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
     public void shouldCreateReadDelete() throws Exception {
-        Data mockData = mockData("shouldCreateRetrieveDelete");
+        DataDTO mockData = mockData("shouldCreateRetrieveDelete");
         byte[] dataJson = toJson(mockData);
         
         MvcResult result = mvc.perform(post("/api/v1/data")
@@ -67,7 +80,7 @@ public class DataServiceControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(redirectedUrlPattern(RESOURCE_LOCATION_PATTERN))
                 .andReturn();
-        long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
+        long id = getResourceIdFromUrl(result.getResponse().getHeader("Location"));
 
         mvc.perform(get("/api/v1/data/" + id)
                 .accept(MediaType.APPLICATION_JSON))
@@ -81,8 +94,9 @@ public class DataServiceControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void shouldCreateAndUpdateAndDelete() throws Exception {
-        Data mockData = mockData("shouldCreateAndUpdate");
+        DataDTO mockData = mockData("shouldCreateAndUpdate");
         byte[] dataJson = toJson(mockData);
 
         MvcResult result = mvc.perform(post("/api/v1/data")
@@ -92,9 +106,9 @@ public class DataServiceControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(redirectedUrlPattern(RESOURCE_LOCATION_PATTERN))
                 .andReturn();
-        long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
+        long id = getResourceIdFromUrl(result.getResponse().getHeader("Location"));
 
-        Data updateMockData = mockData("shouldCreateAndUpdate2");
+        DataDTO updateMockData = mockData("shouldCreateAndUpdate2");
         updateMockData.setId(id);
         byte[] updateMockDataJson = toJson(updateMockData);
 
@@ -121,8 +135,8 @@ public class DataServiceControllerTest {
         return Long.valueOf(parts[parts.length - 1]);
     }
 
-    private Data mockData(String prefix) {
-        Data r = new Data();
+    private DataDTO mockData(String prefix) {
+        DataDTO r = new DataDTO();
         r.setDescription(prefix + "_description");
         r.setName(prefix + "_name");
         return r;

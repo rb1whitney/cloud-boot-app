@@ -1,0 +1,68 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: cloud-boot-app-aws
+  labels:
+    provider: aws
+    cluster: production
+spec:
+  compositeDeletePolicy: Background
+  compositeTypeRef:
+    apiVersion: database.example.org/v1alpha1
+    kind: XCloudBootApp
+  environment:
+    environmentConfigs:
+    - type: Selector
+      selector:
+        matchLabels:
+          environment: dev # Default selector; can be overridden in the Claim
+  resources:
+  # 1. S3 Bucket
+  - name: s3-bucket
+    base:
+      apiVersion: s3.aws.upbound.io/v1beta1
+      kind: Bucket
+      spec:
+        forProvider:
+          region: us-east-1
+    patches:
+    - fromFieldPath: "spec.parameters.bucketName"
+      toFieldPath: "metadata.annotations['crossplane.io/external-name']"
+
+  # 2. RDS MySQL Instance
+  - name: rds-instance
+    base:
+      apiVersion: database.aws.upbound.io/v1beta1
+      kind: Instance
+      spec:
+        forProvider:
+          region: us-east-1
+          engine: mysql
+          engineVersion: "8.0"
+          dbName: cloudbootapp
+          skipFinalSnapshot: false
+    patches:
+    - fromFieldPath: "db.instanceClass"
+      toFieldPath: "spec.forProvider.instanceClass"
+    - fromFieldPath: "db.allocatedStorage"
+      toFieldPath: "spec.forProvider.allocatedStorage"
+
+  # 3. Helm Release
+  - name: helm-release
+    base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: Release
+      spec:
+        forProvider:
+          chart:
+            name: cloud-boot-app
+            repository: oci://registry-1.docker.io/rb1whitney
+            version: "0.1.0"
+          namespace: cloud-boot-app
+    patches:
+    - fromFieldPath: "app.replicaCount"
+      toFieldPath: "spec.forProvider.values.replicaCount"
+    - fromFieldPath: "app.imageTag"
+      toFieldPath: "spec.forProvider.values.image.tag"
+    - fromFieldPath: "app.springProfiles"
+      toFieldPath: "spec.forProvider.values.env.spring_profiles_active"

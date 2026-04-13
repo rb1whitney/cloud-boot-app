@@ -1,0 +1,8 @@
+{
+  "track_id": "cloud_boot_modernization_20260408",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-08T17:50:00Z",
+  "updated_at": "2026-04-08T17:50:00Z",
+  "description": "Update cloud-boot-app to Java 21 and Spring Boot 3.2"
+}

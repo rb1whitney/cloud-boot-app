@@ -1,0 +1,29 @@
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: EnvironmentConfig
+metadata:
+  name: cloud-boot-app-dev
+  labels:
+    environment: dev
+data:
+  db:
+    instanceClass: "db.t3.micro"
+    allocatedStorage: 20
+  app:
+    replicaCount: 1
+    imageTag: "modernized"
+    springProfiles: "h2,dev"
+---
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: EnvironmentConfig
+metadata:
+  name: cloud-boot-app-prod
+  labels:
+    environment: prod
+data:
+  db:
+    instanceClass: "db.m5.large"
+    allocatedStorage: 100
+  app:
+    replicaCount: 5
+    imageTag: "latest"
+    springProfiles: "mysql,prod"

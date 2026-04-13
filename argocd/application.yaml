@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-boot-app-infra
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rb1whitney/cloud-boot-app.git
+    targetRevision: HEAD
+    path: crossplane
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-boot-app-workload
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rb1whitney/cloud-boot-app.git
+    targetRevision: HEAD
+    path: helm/cloud-boot-app
+    helm:
+      valueFiles:
+      - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cloud-boot-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

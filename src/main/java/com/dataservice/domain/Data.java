@@ -1,14 +1,12 @@
 package com.dataservice.domain;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 /* Domain Transaction Object Class */
 
 @Entity
 @Table(name = "data")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Data {
 
     @Id
@@ -16,6 +14,7 @@ public class Data {
     private long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @Column()
@@ -54,9 +53,8 @@ public class Data {
         this.description = description;
     }
 
-    // Returns a basic construct for logging
-    @java.lang.Override
-    public java.lang.String toString() {
+    @Override
+    public String toString() {
         return "Data{" +
                 "id=" + id +
                 ", name='" + name + '\'' +

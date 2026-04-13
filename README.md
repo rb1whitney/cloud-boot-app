@@ -1,84 +1,119 @@
 # Cloud Boot Application
 [![Status](https://travis-ci.org/rb1whitney/cloud-boot-app.svg?branch=master)](https://travis-ci.org/rb1whitney/cloud-boot-app)
 
-This is a basic Java Maven Spring Boot Application that will be put into the cloud either with Docker or upon a servlet container. Intention is to either use an in-memory database or mysql data back end so moving parts in the cloud can be tested. Code was heavily modified and used from https://github.com/khoubyari/spring-boot-rest-example. By default, maven will create a war artifact. If you want to instead create a jar for docker, you can use -Dpackage_type=jar when building project to do it. This project could use a multi-maven project to create both app types and optimize the jar file created, but in this case I wanted this project layout to be more simple.
+This is a modernized Java Maven Spring Boot 3.2 application designed for cloud-native deployment. It utilizes Java 21 and features a containerized architecture using Google Distroless for enhanced security and minimal image size.
+
+## Modernization Highlights
+- **Framework:** Spring Boot 3.2.11
+- **Runtime:** Java 21 (Eclipse Temurin)
+- **Container:** Google Distroless Java 21 (Debian 12)
+- **Architecture:** Clean N-Tier (Controller -> Service -> Repository)
+- **Security:** OPA Gatekeeper policies for cluster-level enforcement.
+- **Infrastructure:** Multi-layered approach using Terraform and Crossplane v2.
 
 ### Playing with the REST Service
 
-There are several operations you can use with this application. They are:
+#### System Endpoints:
+```bash
+# Hello World
+curl http://localhost:8090/cloud-boot-app/
 
-System:
-```
-Hello World: curl http://localhost:10191/cloud-boot-app
-Version Servlet: curl http://localhost:10191/cloud-boot-app/version
-```
+# Version Info
+curl http://localhost:8090/cloud-boot-app/version
 
-CRUD:
-```
-Create data object: curl -H "Content-Type: application/json" -X POST -d '{ "name" : "Test Data", "description" : "This is a sample description" }' http://localhost:10191/cloud-boot-app/api/v1/data
-Read all data object: curl -H "Content-Type: application/json" -X GET http://localhost:10191/cloud-boot-app/api/v1/data
-Read single data object: curl -H "Content-Type: application/json" -X GET http://localhost:10191/cloud-boot-app/api/v1/data/1
-Update data object: curl -H "Content-Type: application/json" -X PUT -d '{ "name" : "Test Data", "description" : "This is a modified description", "id" : "1" }' http://localhost:10191/cloud-boot-app/api/v1/data/1
-Delete data object: curl -H "Content-Type: application/json" -X DELETE http://localhost:10191/cloud-boot-app/api/v1/data/1
+# Swagger UI
+http://localhost:8090/cloud-boot-app/swagger-ui/index.html
 ```
 
-# Running the project with MySQL
+#### CRUD Operations:
+```bash
+# Create data object
+curl -H "Content-Type: application/json" -X POST -d '{ "name" : "Test Data", "description" : "This is a sample description" }' http://localhost:8090/cloud-boot-app/api/v1/data
 
-This project by default uses h2 in-memory database so that I don't have to install a database in order to run it. However, converting it to run with another relational database such as MySQL is a simple matter of changing the application profile with mysql profile:
-
-```
-        java -jar -Dspring.profiles.active=mysql target/cloud-boot-app-0.0.1.war
-or
-        mvn spring-boot:run -Drun.arguments="spring.profiles.active=mysql"
-or
-        add -Dspring.profiles.active=mysql to application container
+# Read all data objects
+curl -H "Content-Type: application/json" -X GET http://localhost:8090/cloud-boot-app/api/v1/data
 ```
 
-# Running with docker
-When running with docker, I package the war as a jar with mutil-stage dockerfile using maven and Java 1.8 OpenJDK:
-```
-docker build -t cloud-boot-app:0.2 .
-docker run -p 8090:8090 -d cloud-boot-app:0.3
-```
+## Prerequisites & Tooling
 
-or run it in interactive mode with to toy with files:
-docker run -it -p 8090:8090 -d cloud-boot-app:0.2 /bin/bash
+To run the full suite of local linters and tests, the following tools are required:
+- **Java 21** & **Maven 3.9+**
+- **Terraform 1.5+**
+- **Helm 3.14+**
+- **TFLint** (with AWS plugin)
+- **Checkov** (Static security analysis)
+- **Conftest** (OPA policy validation)
+- **Hadolint** (Dockerfile linting)
 
-Currently, this project has been pushed out to docker hub under: rb1whitney/cloud-boot-app
+*Tip: Use **Devbox** (`devbox shell`) to automatically install all these tools via Nix.*
 
-# Using Official Oracle JDK
-Using Java Oracle 8 is pretty bloated, but if you want to use it replace OpenJDK with a slimmed down first. Yeah... this is technically "illegal" docker use but do we really care?
+### Local Quality Checks (Sanity Check)
+Run the following commands before committing to ensure code quality and security:
 
-```
-RUN yum -y install wget && \
-   wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$BUILD_VERSION/jdk-$JAVA_VERSION-linux-x64.tar.gz" -O /tmp/jdk.tar.gz && \
-   tar -xzf /tmp/jdk.tar.gz -C /opt && \
-   ln -s /opt/$JDK_NAME /opt/java && \
-   yum -y remove wget && \
-   rm -rf /tmp/jdk.tar.gz \
-          /opt/java/*src.zip \
-          /opt/java/lib/missioncontrol \
-          /opt/java/lib/visualvm \
-          /opt/java/lib/*javafx* \
-          /opt/java/jre/lib/plugin.jar \
-          /opt/java/jre/lib/ext/jfxrt.jar \
-          /opt/java/jre/bin/javaws \
-          /opt/java/jre/lib/javaws.jar \
-          /opt/java/jre/lib/desktop \
-          /opt/java/jre/plugin \
-          /opt/java/jre/lib/deploy* \
-          /opt/java/jre/lib/*javafx* \
-          /opt/java/jre/lib/*jfx*
+```bash
+# Run all linters AND logic tests (Java, HCL, Helm, Rego Unit Tests)
+make lint
+
+# Run infrastructure logic tests & security scans (Checkov)
+make test-iac
+
+# Run Java unit tests with coverage
+make test-java
 ```
 
-# Deploying Application with Terraform
-You can deploy the application with terraform using:
-If you want to use Terraform, please install it and AWS CLI client following with: http://docs.aws.amazon.com/cli/latest/userguide/installing.html#install-with-pip https://www.terraform.io/intro/getting-started/install.html
+### Advanced Infrastructure Testing
+This project implements modern "IaC as Code" testing patterns:
+- **OPA Unit Testing**: Logic for Gatekeeper policies is verified via `opa test` in `gatekeeper/tests/`.
+- **Terraform Logic Tests**: Behavioral assertions for infrastructure are defined in `.tftest.hcl` files.
+- **Static Security Analysis**: `checkov` scans all Terraform and Helm manifests for 2026 security benchmarks.
+- **Helm Integration Tests**: Deployment-time connection tests are included in the chart.
 
-Once done, you can use "aws configure" command to setup your local provider and credentials. Terraform will use them. I recommend setting up a personalized IAM account that has adminstrator privileges in EC2 only.
+## Running the Project
 
-After setting up Terraform with AWS, you will want a remote config to keep your state rather than your local computer. Remote State Storage is highly suggested over maintaining control state files in version control. I also wrote a script that will use terraform output for auto scaling group to get current ip addresses on spun up instances: sh find_auto_scaling_group_instances.sh <>
+### Local Development (Devbox & Nix)
+This project uses **Devbox** for a reproducible development environment.
 
-The organized terraform stack files with their environments files. To save configuration, I kept the module and main terraform implementation files the same and utilized tfvars to control location specific settings. You have to clear out the .terraform cache folder everytime but with the state files being in S3 I had no issues with this implementation. I created a script to help run this with: terraform_wrapper.sh -e <<environment:dev|prod>> -m <<module_group:cloud-boot-app>> -a <<action:apply|plan|destroy>>
+```bash
+# Enter the dev environment (installs Java, Maven, Terraform, Helm, etc.)
+devbox shell
 
-Script will clear cache, set terraform state in C3, get all modules, and then invoke action (apply, destroy, plan).
+# Run local build
+mvn clean package
+```
+
+### On-Demand Kubernetes Development (Skaffold)
+Use **Skaffold** for rapid, iterative testing in a Kubernetes namespace.
+
+```bash
+# Start dev loop in an on-demand namespace
+skaffold dev -n my-dev-namespace
+```
+
+### GitOps Deployment (Argo CD)
+Apply the Argo CD application to sync the entire project via GitOps:
+
+```bash
+# Apply the Argo CD Apps
+kubectl apply -f argocd/application.yaml
+```
+
+## Infrastructure & CI/CD
+- **Terraform:** Located in `terraform/` for AWS deployment.
+- **Helm:** Located in `helm/cloud-boot-app` for Kubernetes deployments.
+- **Crossplane:** v2 Composite Resources for managed infrastructure.
+- **Argo CD:** GitOps manifests for automated syncing.
+- **Skaffold:** For local Kubernetes development workflow.
+- **Devbox:** Nix-powered reproducible dev environment.
+- **Gatekeeper:** OPA policies for cluster security.
+
+### Applying Security Policies (Gatekeeper)
+```bash
+# Apply Constraint Templates
+kubectl apply -f gatekeeper/templates/
+
+# Apply Constraints
+kubectl apply -f gatekeeper/constraints/
+```
+
+## License
+Modified and used from [khoubyari/spring-boot-rest-example](https://github.com/khoubyari/spring-boot-rest-example).
