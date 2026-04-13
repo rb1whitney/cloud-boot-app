@@ -1,6 +1,17 @@
 # Core Infrastructure for Cloud Boot App
 # Provisioned via Terraform for AWS
 
+terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -35,7 +46,6 @@ resource "aws_db_instance" "mysql" {
   db_name                = "cloudbootapp"
   username               = var.db_username
   password               = var.db_password
-  parameter_group_name   = "default.mysql8.0"
   skip_final_snapshot    = true
   publicly_accessible    = false
   storage_encrypted      = true

@@ -1,3 +1,18 @@
+terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    template = {
+      source  = "hashicorp/template"
+      version = "~> 2.2"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_cloud_provider
 }
@@ -29,17 +44,17 @@ resource "aws_security_group" "cba_app" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = var.cba_port
-    to_port     = var.cba_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = var.cba_port
+    to_port         = var.cba_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.cba_elb.id] # Restrict to ELB only
   }
 
   ingress {
-    from_port   = "22"
-    to_port     = "22"
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = "22"
+    to_port         = "22"
+    protocol        = "tcp"
+    security_groups = [var.bastion_security_group_id] # Restrict to Bastion only
   }
 
   egress {

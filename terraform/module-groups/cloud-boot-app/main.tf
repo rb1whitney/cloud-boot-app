@@ -1,13 +1,23 @@
+terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_cloud_provider
 }
 
 module "cloud_domain" {
-  source             = "../../modules/cloud_domain"
-  aws_cloud_provider = var.aws_cloud_provider
-  env_prefix         = var.env_prefix
-  vpc_cidr_block     = var.vpc_cidr_block
-  public_cidr_block  = var.public_cidr_block
+  source            = "../../modules/cloud_domain"
+  env_prefix        = var.env_prefix
+  vpc_cidr_block    = var.vpc_cidr_block
+  public_cidr_block = var.public_cidr_block
 }
 
 module "bastion" {
