@@ -12,4 +12,19 @@ spec:
       image: busybox
       command: ['wget']
       args: ['{{ include "cloud-boot-app.fullname" . }}:{{ .Values.service.port }}/cloud-boot-app/manage/health']
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        runAsNonRoot: true
+        runAsUser: 1000
+        readOnlyRootFilesystem: true
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
   restartPolicy: Never

@@ -38,23 +38,53 @@ resource "aws_s3_bucket_public_access_block" "app_assets_block" {
 
 # 2. RDS MySQL Instance
 resource "aws_db_instance" "mysql" {
-  allocated_storage      = 20
-  storage_type           = "gp2"
-  engine                 = "mysql"
-  engine_version         = "8.0"
-  instance_class         = "db.t3.micro"
-  db_name                = "cloudbootapp"
-  username               = var.db_username
-  password               = var.db_password
-  skip_final_snapshot    = true
-  publicly_accessible    = false
-  storage_encrypted      = true
-  vpc_security_group_ids = [aws_security_group.db_sg.id]
+  allocated_storage                   = 20
+  storage_type                        = "gp2"
+  engine                              = "mysql"
+  engine_version                      = "8.0"
+  instance_class                      = "db.t3.micro"
+  db_name                             = "cloudbootapp"
+  username                            = var.db_username
+  password                            = var.db_password
+  skip_final_snapshot                 = true
+  publicly_accessible                 = false
+  storage_encrypted                   = true
+  vpc_security_group_ids              = [aws_security_group.db_sg.id]
+  iam_database_authentication_enabled = true
+  multi_az                            = true
+  deletion_protection                 = true
+  auto_minor_version_upgrade          = true
+  monitoring_interval                 = 60
+  monitoring_role_arn                 = aws_iam_role.rds_monitoring.arn
+  enabled_cloudwatch_logs_exports     = ["error", "general", "slowquery"]
 
   tags = {
     Name        = "Cloud Boot App DB"
     Environment = var.env_prefix
   }
+}
+
+# 2.1 RDS Monitoring Role
+resource "aws_iam_role" "rds_monitoring" {
+  name = "${var.env_prefix}-rds-monitoring-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "monitoring.rds.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "rds_monitoring" {
+  role       = aws_iam_role.rds_monitoring.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
 }
 
 # 3. Security Group for Database
@@ -64,6 +94,7 @@ resource "aws_security_group" "db_sg" {
   vpc_id      = var.vpc_id
 
   ingress {
+    description = "Allow MySQL traffic from VPC"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
@@ -71,6 +102,7 @@ resource "aws_security_group" "db_sg" {
   }
 
   egress {
+    description = "Allow all outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
