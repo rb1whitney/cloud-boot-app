@@ -34,20 +34,21 @@ curl -H "Content-Type: application/json" -X POST -d '{ "name" : "Test Data", "de
 curl -H "Content-Type: application/json" -X GET http://localhost:8090/cloud-boot-app/api/v1/data
 ```
 
-## Prerequisites & Tooling
-
-To run the full suite of local linters and tests, the following tools are required:
-- **Java 21** & **Maven 3.9+**
-- **Terraform 1.5+**
-- **Helm 3.14+**
-- **TFLint** (with AWS plugin)
-- **Checkov** (Static security analysis)
-- **Conftest** (OPA policy validation)
-- **Hadolint** (Dockerfile linting)
-
 *Tip: Use **Devbox** (`devbox shell`) to automatically install all these tools via Nix.*
 
+### Global CLI Installation
+To ensure all project experts can audit the environment, install the following core tools:
+
+| Category | Tool | Installation Command (Linux/macOS) |
+| :--- | :--- | :--- |
+| **Cloud Core** | AWS CLI | `curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && sudo ./aws/install` |
+| **K8s Core** | Kubectl | `curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl && sudo mv kubectl /usr/local/bin/` |
+| **GitOps** | ArgoCD | `brew install argocd` |
+| **Control Plane** | Crossplane | `brew install crossplane` |
+| **Policy Logic** | Gator | `curl -L -o gator https://github.com/open-policy-agent/gatekeeper/releases/download/v3.13.0/gator-v3.13.0-linux-amd64 && chmod +x gator && sudo mv gator /usr/local/bin/` |
+
 ### Local Quality Checks (Sanity Check)
+
 Run the following commands before committing to ensure code quality and security:
 
 ```bash

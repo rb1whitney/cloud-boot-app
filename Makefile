@@ -19,11 +19,15 @@ HELM      := $(call BIN_DISCOVERY,helm)
 OPA       := $(call BIN_DISCOVERY,opa)
 HADOLINT  := $(call BIN_DISCOVERY,hadolint)
 CHECKOV   := $(call BIN_DISCOVERY,checkov)
+GATOR     := $(call BIN_DISCOVERY,gator)
 
-.PHONY: lint lint-java lint-hcl lint-helm lint-opa lint-docker lint-security test test-java test-iac debug-env
+
+.PHONY: lint lint-java lint-hcl lint-helm lint-opa lint-gator lint-docker lint-security test test-java test-iac debug-env
+
 
 # Default target runs all linters including static security scans
-lint: debug-env lint-java lint-hcl lint-helm lint-opa lint-docker lint-security
+lint: debug-env lint-java lint-hcl lint-helm lint-opa lint-gator lint-docker lint-security
+
 
 .NOTPARALLEL:
 
@@ -60,6 +64,16 @@ lint-opa:
 	@echo "==> Validating OPA Policy logic (Rego Tests)..."
 	$(OPA) test gatekeeper/tests/ -v
 
+# 5. Gatekeeper Policy Validation (Gator)
+lint-gator:
+	@echo "==> Validating Gatekeeper Constraints (Gator)..."
+	@if [ -x "$(GATOR)" ] || which gator >/dev/null 2>&1; then \
+		$(GATOR) verify gatekeeper/templates/ gatekeeper/constraints/ helm/cloud-boot-app/; \
+	else \
+		echo "Skipping Gator: binary not found in PATH or standard locations."; \
+	fi
+
+
 # 5. Dockerfile Linting
 lint-docker:
 	@echo "==> Linting Dockerfile..."
@@ -74,7 +88,7 @@ lint-security:
 	@echo "==> Running Security Scan (Checkov)..."
 	@if [ -x "$(CHECKOV)" ] || which checkov >/dev/null 2>&1; then \
 		$(CHECKOV) -d terraform/ --quiet --compact; \
-		$(CHECKOV) -d helm/cloud-boot-app --quiet --compact; \
+		$(CHECKOV) -d helm/cloud-boot-app --var namespace=cloud-boot-app --quiet --compact; \
 	else \
 		echo "Skipping Checkov: binary not found in PATH or standard locations."; \
 	fi

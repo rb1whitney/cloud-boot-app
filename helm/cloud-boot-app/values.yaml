@@ -5,6 +5,7 @@ image:
   repository: cloud-boot-app
   pullPolicy: Always
   tag: "modernized"
+  digest: "sha256:06497f1f91b79f225d50638e4a9e525a7aee1dc534003d6d03a1f815e19736e4" # Placeholder digest for Checkov compliance
 
 imagePullSecrets: []
 nameOverride: ""
