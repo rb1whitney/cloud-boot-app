@@ -20,10 +20,10 @@ OPA       := $(call BIN_DISCOVERY,opa)
 HADOLINT  := $(call BIN_DISCOVERY,hadolint)
 CHECKOV   := $(call BIN_DISCOVERY,checkov)
 
-.PHONY: lint lint-java lint-hcl lint-helm lint-opa lint-docker test test-java test-iac debug-env
+.PHONY: lint lint-java lint-hcl lint-helm lint-opa lint-docker lint-security test test-java test-iac debug-env
 
-# Default target runs all linters
-lint: debug-env lint-java lint-hcl lint-helm lint-opa lint-docker
+# Default target runs all linters including static security scans
+lint: debug-env lint-java lint-hcl lint-helm lint-opa lint-docker lint-security
 
 .NOTPARALLEL:
 
@@ -69,16 +69,20 @@ lint-docker:
 		echo "Skipping Hadolint: binary not found in PATH or standard locations."; \
 	fi
 
+# 6. Infrastructure Security Scan (Checkov)
+lint-security:
+	@echo "==> Running Security Scan (Checkov)..."
+	$(CHECKOV) -d terraform/ --quiet --compact
+	$(CHECKOV) -d helm/cloud-boot-app --quiet --compact
+
 # Testing Targets
-test: test-java test-iac
+test: test-java
 
 test-java:
 	@echo "==> Running JUnit tests..."
 	$(MVN) test
 
+# Manual Infrastructure Tests (Expensive/Credential-dependent)
 test-iac:
-	@echo "==> Running Terraform Logic Tests..."
+	@echo "==> Running Terraform Logic Tests (Requires AWS Credentials)..."
 	find terraform/ -type d -name "tests" -exec dirname {} \; | sort -u | xargs -I {} sh -c "cd {} && $(TERRAFORM) init -backend=false && $(TERRAFORM) test"
-	@echo "==> Running Security Scan (Checkov)..."
-	$(CHECKOV) -d terraform/ --quiet --compact
-	$(CHECKOV) -d helm/cloud-boot-app --quiet --compact
