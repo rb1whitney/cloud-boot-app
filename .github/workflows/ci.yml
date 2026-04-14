@@ -41,6 +41,9 @@ jobs:
         with:
           version: latest
 
+      - name: Install Static Analysis Tools (Checkov)
+        run: pip3 install checkov
+
       - name: Run Unified Linting
         run: make lint
 
@@ -66,8 +69,3 @@ jobs:
 
       - name: Run Java Tests
         run: make test-java
-
-      - name: Run Infrastructure Tests
-        run: |
-          pip3 install checkov
-          make test-iac
