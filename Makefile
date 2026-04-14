@@ -74,7 +74,7 @@ lint-security:
 	@echo "==> Running Security Scan (Checkov)..."
 	@if [ -x "$(CHECKOV)" ] || which checkov >/dev/null 2>&1; then \
 		$(CHECKOV) -d terraform/ --quiet --compact; \
-		$(CHECKOV) -d helm/cloud-boot-app --quiet --compact; \
+		$(CHECKOV) -d helm/cloud-boot-app --var namespace=cloud-boot-app --quiet --compact; \
 	else \
 		echo "Skipping Checkov: binary not found in PATH or standard locations."; \
 	fi
