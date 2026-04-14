@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: cloud-boot-app
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "modernized"
 
 imagePullSecrets: []
@@ -18,16 +18,18 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
 
 securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
     - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 65534 # Distroless default
+  runAsUser: 10001
 
 service:
   type: ClusterIP

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cloud-boot-app.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "cloud-boot-app.labels" . | nindent 4 }}
 spec:
@@ -25,6 +26,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "cloud-boot-app.serviceAccountName" . }}
+      automountServiceAccountToken: false
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

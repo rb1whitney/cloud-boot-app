@@ -2,23 +2,36 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ include "cloud-boot-app.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "cloud-boot-app.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
+  automountServiceAccountToken: false
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
   containers:
     - name: wget
-      image: busybox
+      image: busybox:1.36.1@sha256:6caed259f973fa96df9908de7d7b102914cfef982c7f3944747a17f69460d37e
       command: ['wget']
       args: ['{{ include "cloud-boot-app.fullname" . }}:{{ .Values.service.port }}/cloud-boot-app/manage/health']
+      livenessProbe:
+        exec:
+          command:
+            - "true"
+      readinessProbe:
+        exec:
+          command:
+            - "true"
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
             - ALL
         runAsNonRoot: true
-        runAsUser: 1000
+        runAsUser: 10001
         readOnlyRootFilesystem: true
       resources:
         limits:
