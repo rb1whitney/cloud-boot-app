@@ -33,7 +33,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}{{ with .Values.image.digest }}@{{ . }}{{ end }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -42,22 +42,18 @@ spec:
           livenessProbe:
             httpGet:
               path: /cloud-boot-app/manage/health
-              port: 8091
+              port: http
           readinessProbe:
             httpGet:
               path: /cloud-boot-app/manage/health
-              port: 8091
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: {{ .Values.env.spring_profiles_active | quote }}
-          volumeMounts:
-            - name: tmp
-              mountPath: /tmp
+              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      volumes:
-        - name: tmp
-          emptyDir: {}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key | upper }}
+              value: {{ $value | quote }}
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
