@@ -3,7 +3,7 @@
 # 2.) Runs Spring Boot Application using Google Distroless Java 21
 
 # Builder Code
-FROM maven:3-eclipse-temurin-25 AS builder
+FROM maven:3-eclipse-temurin-26 AS builder
 RUN mkdir -p /usr/src/build
 WORKDIR /usr/src/build
 
