@@ -1,10 +1,7 @@
 ---
 name: pr-creator
-description: Use this skill when asked to create a pull request (PR). It ensures all PRs
-related_skills: []
-auto_triggers: []
+description: "Drafts and manages high-quality Pull Requests adhering to repo standards."
 ---
-
 # Pull Request Creator
 
 This skill guides the creation of high-quality Pull Requests that adhere to the

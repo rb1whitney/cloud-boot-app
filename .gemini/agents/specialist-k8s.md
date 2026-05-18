@@ -1,0 +1,1 @@
+../../.agent/agents/specialist-k8s.md
