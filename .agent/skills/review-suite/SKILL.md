@@ -1,8 +1,6 @@
 ---
-name: gemini-review-suite
-description: Comprehensive PR analysis and code review suite. Includes asynchronous PR review, duplicated code detection, and automated comment addressing. Use for any GitHub Pull Request review, quality gate, or code analysis task.
-related_skills: []
-auto_triggers: []
+name: review-suite
+description: "High-resolution PR analysis and multi-agent code review suite."
 ---
 # Gemini Review Suite
 
