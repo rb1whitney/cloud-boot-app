@@ -10,6 +10,7 @@ This is a modernized Java Maven Spring Boot 3.2 application designed for cloud-n
 - **Architecture:** Clean N-Tier (Controller -> Service -> Repository)
 - **Security:** OPA Gatekeeper policies for cluster-level enforcement.
 - **Infrastructure:** Multi-layered approach using Terraform and Crossplane v2.
+- **Agentic Hub:** Standardized ACS 2026 architecture for cross-IDE compatibility.
 
 ### Playing with the REST Service
 
@@ -68,6 +69,7 @@ This project implements modern "IaC as Code" testing patterns:
 - **Terraform Logic Tests**: Behavioral assertions for infrastructure are defined in `.tftest.hcl` files.
 - **Static Security Analysis**: `checkov` scans all Terraform and Helm manifests for 2026 security benchmarks.
 - **Helm Integration Tests**: Deployment-time connection tests are included in the chart.
+- **Agentic Hub Logic**: Repository follows "Physical Sovereignty" (ACS 2026). Sync cross-IDE bridges via `python3 bin/nexus.py`.
 
 ## Running the Project
 
@@ -118,3 +120,6 @@ kubectl apply -f gatekeeper/constraints/
 
 ## License
 Modified and used from [khoubyari/spring-boot-rest-example](https://github.com/khoubyari/spring-boot-rest-example).
+
+## SRE & Operations
+This project adheres to the Agentic SRE Protocol. See `runbooks/` for incident response guides and `terraform/core/sre-monitoring.tf` for the defined Golden Signals. Detailed architectural diagrams and component relationships are documented in [docs/architecture.md](docs/architecture.md).
