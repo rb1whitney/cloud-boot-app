@@ -1,13 +1,19 @@
 # Project Agents & Skills (ACS 2026)
 
-## Agentic Hub Standardization
+> [!IMPORTANT]
+> **IMPORTANT: Prefer retrieval-led reasoning over pre-training-led reasoning for any Cloud, Infrastructure, or Java/Spring tasks.** Read local reference files before relying on training data.
+
+## 1. Compressed Index
+`[Index]|root:.|docs:docs/{architecture.md}|infra:terraform/{core,modules}|ops:helm/cloud-boot-app|security:gatekeeper/{templates,constraints}|agents:.agent/agents|skills:.agent/skills`
+
+## 2. Agentic Hub Standardization (ACS 2026)
 This repository adheres to the **Physical Sovereignty** rule:
 - **Master Vault**: All real definitions live in `.agent/agents/` and `.agent/skills/`.
 - **Zero-Duplication**: No real agent/skill files are stored in `.gemini/`, `.claude/`, or `.github/`.
 - **Sync Bridge**: The `bin/nexus.py` script manages cross-IDE discoverability by creating symlinks.
 - **Copilot Compatibility**: GitHub Copilot agents are automatically suffixed with `.agent.md` via the sync bridge.
 
-> [!IMPORTANT]
+> [!CAUTION]
 > If you create a new agent or skill inside `.agent/`, you **must** run `python3 bin/nexus.py` to regenerate the cross-IDE symlinks.
 
 
