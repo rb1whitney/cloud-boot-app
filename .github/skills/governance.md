@@ -1,0 +1,1 @@
+../../.agent/skills/governance/SKILL.md

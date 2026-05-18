@@ -33,11 +33,11 @@ The `cloud-boot-app` is a **Spring Boot 3.2.11** application (Java 21) following
 ## 4. Infrastructure & Deployment
 
 - **Packaging**: The application is packaged as a **WAR** file, suitable for deployment in standalone containers or cloud-native environments.
-- **Terraform**: The project includes Terraform modules in `cloud-boot-app/terraform/` for managing:
+- **Terraform**: The project includes Terraform modules in `terraform/` for managing:
   - Bastion Hosts
   - S3 Buckets
   - Cloud Application Infrastructure
-- **Kubernetes (Helm)**: A Helm chart is provided in `cloud-boot-app/helm/cloud-boot-app` for containerized deployments into Kubernetes clusters. It handles:
+- **Kubernetes (Helm)**: A Helm chart is provided in `helm/cloud-boot-app` for containerized deployments into Kubernetes clusters. It handles:
   - Scalable Deployments with health checks (Actuator).
   - Internal/External Service and Ingress management.
   - Security contexts optimized for Distroless images.
@@ -71,3 +71,15 @@ The infrastructure is managed using **Terraform** and follows a modular design f
 ### Relationship Graph
 - **Networking Dependency**: The `bastion` and `cloud_boot_app` modules depend on `cloud_domain` for subnet IDs and VPC configuration.
 - **Security Dependency**: `cloud_boot_app` references `module.bastion.bastion_security_group_id` for SSH ingress, enforcing a "no direct access" security model.
+
+## 7. Agentic Architecture (ACS 2026)
+
+This repository implements the **Agentic Hub Standardization** pattern to ensure consistent behavior across multiple AI interfaces (Gemini, Claude, GitHub Copilot).
+
+### Physical Sovereignty
+- **Master Vault**: All agent definitions and specialized skills are stored in the `.agent/` directory. This is the single source of truth.
+- **Symlink Bridges**: Tool-specific directories (`.gemini/`, `.claude/`, `.github/`) contain symlinks pointing back to the master vault.
+
+### Orchestration & Sync
+- **Nexus Sync Engine (`bin/nexus.py`)**: A Python-based automation tool that regenerates the symlink infrastructure, ensuring cross-IDE discoverability and adhering to vendor-specific naming conventions (e.g., the `.agent.md` suffix for GitHub Copilot).
+- **Unified Manifest (`AGENTS.md`)**: A centralized manifest at the root of the repository that defines all available experts and their core instructions.

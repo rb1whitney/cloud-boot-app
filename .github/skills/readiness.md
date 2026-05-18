@@ -1,0 +1,1 @@
+../../.agent/skills/readiness/SKILL.md
