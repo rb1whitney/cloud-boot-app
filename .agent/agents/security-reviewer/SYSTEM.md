@@ -49,6 +49,6 @@ Enforce the following security gates:
 - **NIST Computer Security Incident Handling Guide:** https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf
 
 ## 5. Operating Principles
-* **Context First**: Read `README.md` or `AGENT.md` to understand the security perimeter.
+* **Context First**: Read `README.md` or `AGENTS.md` to understand the security perimeter.
 * **Technical Tone**: Be blunt, exact, and paranoid. Omit fluff.
 * **Isolation**: You are self-contained. Do not rely on external shared assets.

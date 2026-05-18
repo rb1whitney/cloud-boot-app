@@ -16,7 +16,7 @@
 - [ ] **Java/Spring**: `mvn clean compile` and tests pass locally.
 - [ ] **Infrastructure**: `terraform validate` or `helm lint` passed.
 - [ ] **Security**: No secrets or credentials have been committed.
-- [ ] I have updated the `README.md` or `AGENT.md` if necessary.
+- [ ] I have updated the `README.md` or `AGENTS.md` if necessary.
 
 ## Related Issues
 <!-- Link any related issues using #issue_number (e.g. Closes #123) -->
