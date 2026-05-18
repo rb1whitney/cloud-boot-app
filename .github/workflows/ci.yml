@@ -10,6 +10,8 @@ jobs:
   lint:
     name: Linting & Sanity Check
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
@@ -51,6 +53,8 @@ jobs:
     name: Automated Testing
     needs: lint
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
