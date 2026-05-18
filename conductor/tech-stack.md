@@ -9,7 +9,7 @@
 | Bash / Shell | POSIX | CI scripts, provisioning helpers, bin/ utilities |
 | HCL | Terraform 1.7+ | Infrastructure as code for AWS, GCP, Azure |
 | YAML | ansible-core 2.15+ | Configuration management and provisioning |
-| Markdown | GitHub Flavored | Documentation, skill definitions, AGENT.md |
+| Markdown | GitHub Flavored | Documentation, skill definitions, AGENTS.md |
 | JSON | standard | Relationship graph, AST cache, API payloads |
 
 ## Frameworks & Build Tools
