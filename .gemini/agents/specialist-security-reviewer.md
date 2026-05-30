@@ -1,1 +1,0 @@
-../../.agent/agents/specialist-security-reviewer.md

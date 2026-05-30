@@ -20,11 +20,6 @@ invoker-log/
 .mvn/wrapper/maven-wrapper.jar
 
 # IDEs
-.settings/
-.project
-.classpath
-.factorypath
-bin/
 *.iml
 *.iws
 *.ipr
