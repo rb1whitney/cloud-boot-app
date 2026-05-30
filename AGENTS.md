@@ -30,7 +30,7 @@ Target: **60-98% token reduction**.
 ## 4. Semantic Project Map (Strategic Index)
 | Domain | Path | Strategic Role | Key APIs / Patterns |
 | :--- | :--- | :--- | :--- |
-| **Logic** | `src/main/java` | Spring Boot 3.2 High-Velocity Backend | `Java 21`, `Lombok`, `Springdoc` |
+| **Logic** | `src/main/java` | Spring Boot 4.0 High-Velocity Backend | `Java 21`, `Lombok`, `Springdoc` |
 | **Docs** | `docs/` | Architectural Topology & Design rationale | `C4 Model`, `ADRs`, `Dependency Tree` |
 | **Infra** | `terraform/core` | AWS Master Plan | `S3 Backend`, `Variables`, `Golden Signals` |
 | **Infra** | `terraform/modules` | AWS Component Library | `Bastion`, `ASG`, `ELB`, `S3`, `Domain` |

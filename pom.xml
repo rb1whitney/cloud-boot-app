@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.11</version>
+        <version>4.0.6</version>
     </parent>
     <properties>
         <package_type>war</package_type>
@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>21</java.version>
-        <spring-boot.version>3.2.11</spring-boot.version>
+        <spring-boot.version>4.0.6</spring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -113,7 +113,7 @@
                 <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>2.5.0</version>
+                <version>3.0.3</version>
                 </dependency>
                 <dependency>
                 <groupId>org.projectlombok</groupId>

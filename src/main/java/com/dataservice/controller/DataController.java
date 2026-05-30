@@ -3,6 +3,11 @@ package com.dataservice.controller;
 import com.dataservice.dto.DataDTO;
 import com.dataservice.exception.ResourceNotFoundException;
 import com.dataservice.service.DataService;
+import com.dataservice.validator.RangeCondition;
+import com.dataservice.validator.RangeValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 
 /* REST API endpoints */
 
 @RestController
 @RequestMapping(value = "/api/v1/data")
+@Tag(name = "Data", description = "The Data API")
 public class DataController {
 
     private static final Logger log = LoggerFactory.getLogger(DataController.class);
@@ -47,6 +54,20 @@ public class DataController {
                                                @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size,
                                                HttpServletRequest request, HttpServletResponse response) {
         return this.dataService.getAllData(page, size);
+    }
+
+    @Operation(summary = "Search data using range conditions", description = "Allows searching data with conditions like BETWEEN, GREATER_THAN, etc.")
+    @GetMapping(value = "/search",
+            produces = {"application/json", "application/xml"})
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Page<DataDTO> searchData(
+            @Parameter(description = "The range condition to apply") @RequestParam(value = "condition") RangeCondition condition,
+            @Parameter(description = "The values for the range condition") @RequestParam(value = "values") List<String> values,
+            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) Integer page,
+            @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer size) {
+        
+        RangeValidator.validate(condition, values);
+        return this.dataService.searchData(condition, values, page, size);
     }
 
     // Gets data via the resource id

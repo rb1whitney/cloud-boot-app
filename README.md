@@ -1,7 +1,7 @@
 # Cloud Boot Application
 [![Status](https://travis-ci.org/rb1whitney/cloud-boot-app.svg?branch=master)](https://travis-ci.org/rb1whitney/cloud-boot-app)
 
-This is a modernized Java Maven Spring Boot 3.2 application designed for cloud-native deployment. It utilizes Java 21 and features a containerized architecture using Google Distroless for enhanced security and minimal image size.
+This is a modernized Java Maven Spring Boot 4.0 application designed for cloud-native deployment. It utilizes Java 21 and features a containerized architecture using Google Distroless for enhanced security and minimal image size.
 
 ## 1. Strategic Architecture Overview
 
@@ -17,7 +17,7 @@ graph TD
         ALB --> ING
         
         subgraph "Pod Boundary (Distroless)"
-            APP["Spring Boot 3.2 Service"]
+            APP["Spring Boot 4.0 Service"]
             ACT["Spring Actuator (Metrics)"]
             APP --- ACT
         end
@@ -50,7 +50,7 @@ graph TD
 ```
 
 ### Modernization Highlights
-- **Framework:** Spring Boot 3.2.11
+- **Framework:** Spring Boot 4.0.6
 - **Runtime:** Java 21 (Eclipse Temurin)
 - **Container:** Google Distroless Java 21 (Debian 12)
 - **Architecture:** Clean N-Tier (Controller -> Service -> Repository)

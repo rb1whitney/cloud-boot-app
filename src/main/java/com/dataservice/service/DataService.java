@@ -47,6 +47,13 @@ public class DataService {
         return dataRepository.findAll(PageRequest.of(page, size)).map(this::convertToDTO);
     }
 
+    // Search data based on condition and values
+    public Page<DataDTO> searchData(com.dataservice.validator.RangeCondition condition, java.util.List<String> values, Integer page, Integer size) {
+        // Skeleton implementation returning an empty page or delegating to repository if applicable
+        // For now, we return empty page as requested "at least a skeleton implementation"
+        return Page.empty(PageRequest.of(page, size));
+    }
+
     private DataDTO convertToDTO(Data data) {
         return new DataDTO(data.getId(), data.getName(), data.getDescription());
     }
