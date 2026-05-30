@@ -63,6 +63,6 @@ The system exposes granular metrics via **Spring Actuator**, scraped by a manage
 
 This repository implements the **Agent Hub Standardization** protocol to ensure consistent behavior across multiple AI interfaces.
 - **Physical Sovereignty (Master Vault)**: The `.agent/` hub is the immutable source of truth for all specialist maintenance personas and skills.
-- **Symlink Bridges**: Tool-specific directories (`.gemini/`, `.claude/`, `.github/`) contain symlinks pointing back to the master vault.
+- **Symlink Bridges**: Tool-specific directories (e.g., `.github/`) contain symlinks pointing back to the master vault.
 - **Nexus Sync Engine**: `bin/nexus.py` regenerates the symlink infrastructure, ensuring sub-second parity and cross-IDE discoverability (e.g., appending `.agent.md` for Copilot).
 - **Unified Manifest (`AGENTS.md`)**: Centralized manifest defining all available experts and their core instructions.

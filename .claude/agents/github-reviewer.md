@@ -1,1 +1,0 @@
-../../.agent/agents/github-reviewer/SYSTEM.md

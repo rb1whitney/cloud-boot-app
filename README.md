@@ -157,10 +157,3 @@ kubectl apply -f gatekeeper/constraints/
 
 ## 7. SRE & Operations
 This project adheres to the Agentic SRE Protocol. See `runbooks/` for incident response guides and `terraform/core/sre-monitoring.tf` for the defined Golden Signals.
-
----
-*License: Modified and used from [khoubyari/spring-boot-rest-example](https://github.com/khoubyari/spring-boot-rest-example).*
-toring.tf` for the defined Golden Signals.
-
----
-*License: Modified and used from [khoubyari/spring-boot-rest-example](https://github.com/khoubyari/spring-boot-rest-example).*
