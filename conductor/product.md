@@ -15,7 +15,7 @@ The **Cloud-Boot-App** is a high-performance, reference-grade Java backend desig
 - **Zero-Shortcut Engineering**: No placeholders, faked tests, or unmanaged technical debt.
 
 ## Managed Domains
-- **Core**: Spring Boot 3.2 / Java 21.
+- **Core**: Spring Boot 4.0 / Java 21.
 - **Infrastructure**: Modular Terraform (AWS) and Crossplane v2 (Control Plane).
 - **Security**: OPA Gatekeeper for K8s governance and Checkov for IaC security.
 - **Ops**: GitOps via ArgoCD and standardized SRE protocols.

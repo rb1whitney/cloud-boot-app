@@ -11,7 +11,7 @@ public class ProjectVersionTest {
     public void testSpringBootVersion() {
         String version = SpringBootVersion.getVersion();
         System.out.println("Current Spring Boot Version: " + version);
-        assertTrue(version.startsWith("3.2"), "Spring Boot version should be 3.2.x");
+        assertTrue(version.startsWith("4.0"), "Spring Boot version should be 4.0.x");
     }
 
     @Test

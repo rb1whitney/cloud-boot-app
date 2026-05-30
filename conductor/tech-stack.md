@@ -4,7 +4,7 @@
 
 | Language | Version | Purpose |
 |---|---|---|
-| Java | 21 (LTS) | Backend application logic (Spring Boot 3.2) |
+| Java | 21 (LTS) | Backend application logic (Spring Boot 4.0) |
 | Python | 3.11+ | AST bridge tools, automation scripts, code_mapper.py |
 | Bash / Shell | POSIX | CI scripts, provisioning helpers, bin/ utilities |
 | HCL | Terraform 1.7+ | Infrastructure as code for AWS, GCP, Azure |
@@ -16,7 +16,7 @@
 
 | Tool | Version | Role |
 |---|---|---|
-| Spring Boot | 3.2.x | Primary backend framework |
+| Spring Boot | 4.0.x | Primary backend framework |
 | Maven | 3.9+ | Java build and dependency management |
 | JUnit | 5.x | Unit and integration testing |
 | Project Lombok | latest | Java boilerplate reduction |
@@ -92,7 +92,7 @@
 
 | Approved | Not Approved |
 |---|---|
-| Java 21 / Spring Boot 3.2 | Java 1.8 / Spring Boot 1.x |
+| Java 21 / Spring Boot 4.0 | Java 1.8 / Spring Boot 1.x |
 | Maven 3.9+ | Gradle (for this project) |
 | Google Distroless | Ubuntu/Alpine full OS images |
 | Terraform for all cloud resources | CloudFormation, CDK |

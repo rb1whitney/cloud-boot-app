@@ -1,14 +1,14 @@
 # Cloud-Boot-App: Strategic Architecture Design (2026)
 
 ## Executive Summary: The Resilience & Security Standard
-The **Cloud-Boot-App** is a high-performance, N-tier Spring Boot 3.2 ecosystem engineered for **Zero-Trust Sovereignty**. By leveraging a **Distroless** container strategy and **ArgoCD-led GitOps**, the system achieves a 90% reduction in attack surface while maintaining 100% configuration consistency across multi-cloud environments.
+The **Cloud-Boot-App** is a high-performance, N-tier Spring Boot 4.0 ecosystem engineered for **Zero-Trust Sovereignty**. By leveraging a **Distroless** container strategy and **ArgoCD-led GitOps**, the system achieves a 90% reduction in attack surface while maintaining 100% configuration consistency across multi-cloud environments.
 
 ## 1. Component Topology & Logic Flow
 
 The application is architected around a **Clean N-Tier** pattern, isolating business logic from infrastructure and presentation concerns.
 
 ### Cognitive Logic Layers
-- **Presentation Tier (`com.dataservice.controller`)**: High-concurrency REST endpoints (Spring Boot 3.2). Implements OpenAPI 3.0 documentation and JSR-303 validation. Includes `DataController` (`/api/v1/data`) and `VersionController`. Integrated with **Spring Security** and **Lombok**.
+- **Presentation Tier (`com.dataservice.controller`)**: High-concurrency REST endpoints (Spring Boot 4.0). Implements OpenAPI 3.0 documentation and JSR-303 validation. Includes `DataController` (`/api/v1/data`) and `VersionController`. Integrated with **Spring Security** and **Lombok**.
 - **Service Tier (`com.dataservice.service`)**: The **Business Logic Orchestrator**. Decouples API consumers from the persistence layer and manages transactional boundaries via `DataService`.
 - **Persistence Tier (`com.dataservice.repository`)**: Abstraction layer via **Spring Data JPA** (`DataRepository`). Provides automated, type-safe CRUD operations with optimized paging and sorting.
 - **Domain Tier (`com.dataservice.domain`)**: JPA-annotated entity model (`Data`). Serves as the single truth for data structure and relational constraints.

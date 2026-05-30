@@ -32,6 +32,7 @@ jobs:
         uses: terraform-linters/setup-tflint@v6
         with:
           tflint_version: v0.50.3
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Helm
         uses: azure/setup-helm@v5
