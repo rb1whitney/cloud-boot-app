@@ -34,7 +34,9 @@ resource "aws_security_group" "cba_lb" {
   }
 
   tags = {
-    Name = "load_balancer"
+    Name        = "load_balancer"
+    Cost-Center = var.cost_center
+    Environment = var.env_prefix
   }
 }
 
@@ -69,7 +71,9 @@ resource "aws_security_group" "cba_app" {
   }
 
   tags = {
-    Name = "cba"
+    Name        = "cba"
+    Cost-Center = var.cost_center
+    Environment = var.env_prefix
   }
 }
 
@@ -97,7 +101,9 @@ resource "aws_security_group" "cba_elb" {
   }
 
   tags = {
-    Name = "load_balancer_cba"
+    Name        = "load_balancer_cba"
+    Cost-Center = var.cost_center
+    Environment = var.env_prefix
   }
 }
 
@@ -133,6 +139,12 @@ resource "aws_elb" "cba_elb" {
     target              = "HTTP:${var.cba_port}/cloud-boot-app/version"
     timeout             = 3
     unhealthy_threshold = 2
+  }
+
+  tags = {
+    Name        = "${var.env_prefix}-elb"
+    Cost-Center = var.cost_center
+    Environment = var.env_prefix
   }
 }
 
@@ -186,6 +198,12 @@ resource "aws_autoscaling_group" "cba_app" {
   tag {
     key                 = "Environment"
     value               = "${var.env_prefix}-cba"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Cost-Center"
+    value               = var.cost_center
     propagate_at_launch = true
   }
 }

@@ -81,3 +81,8 @@ variable "ebs_device_name" {
   type        = string
   default     = "/dev/sdb"
 }
+
+variable "cost_center" {
+  description = "The cost center for billing purposes"
+  type        = string
+}
