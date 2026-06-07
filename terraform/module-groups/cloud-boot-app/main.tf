@@ -51,4 +51,5 @@ module "cloud_boot_app" {
   instance_type             = var.cba_instance_type
   subnet_ids                = module.cloud_domain.public_subnets[0]
   vpc_id                    = module.cloud_domain.vpc_id
+  cost_center               = var.cost_center
 }

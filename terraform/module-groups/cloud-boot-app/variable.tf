@@ -102,3 +102,8 @@ variable "ami_name" {
   type        = string
   default     = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20190628"
 }
+
+variable "cost_center" {
+  description = "The cost center for billing purposes"
+  type        = string
+}
